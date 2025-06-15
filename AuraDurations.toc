@@ -8,5 +8,7 @@
 ## Version: @project-version@
 ## X-Date: @project-date-integer@
 
-
+Libs/LibStub/LibStub.lua
+Libs/CallbackHandler-1.0/CallbackHandler-1.0.xml
+Libs/LibClassicDurations/LibClassicDurations.xml
 AuraDurations.xml
