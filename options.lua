@@ -27,8 +27,8 @@ local function SetupOptions()
     lib.addonCategory = category
 
     do
-        local name = "Show all enemy debuffs"
-        local variable = "Show all enemy debuffs"
+        local name = "Show All Enemy Debuffs"
+        local variable = "Show All Enemy Debuffs"
         local variableKey = "noDebuffFilter"
         local variableTbl = AuraDurationsDB
         local defaultValue = lib.Defaults.noDebuffFilter
@@ -47,7 +47,7 @@ local function SetupOptions()
         -- callbacks whenever access to the setting is required.
 
         local name = "Aura Size"
-        local variable = "Aura size"
+        local variable = "Aura Size"
         local defaultValue = lib.Defaults.auraSizeLarge
         local minValue = 8
         local maxValue = 64
@@ -93,7 +93,7 @@ local function SetupOptions()
         -- callbacks whenever access to the setting is required.
 
         local name = "Aura Size Small"
-        local variable = "Aura size Small"
+        local variable = "Aura Size Small"
         local defaultValue = lib.Defaults.auraSizeSmall
         local minValue = 8
         local maxValue = 64
