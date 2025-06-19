@@ -14,17 +14,32 @@ local MAX_TARGET_DEBUFFS = MAX_TARGET_DEBUFFS or 16;
 local UnitAura = UnitAura
 local LibClassicDurations;
 
+local SetCVarFunc = SetCVar;
+-- if C_CVar and C_CVar.SetCVar then
+--     SetCVarFunc = C_CVar.SetCVar;
+-- else
+--     SetCVarFunc = SetCVar;
+-- end
+
+local GetCVarFunc = GetCVarBool;
+-- if C_CVar and C_CVar.GetCVar then
+--     GetCVarFunc = C_CVar.GetCVarBool;
+-- else
+--     GetCVarFunc = GetCVarBool;
+-- end
+
 local defaults = {
     auraSizeSmall = 17, -- SMALL_AURA_SIZE,
     auraSizeLarge = 21, -- LARGE_AURA_SIZE,
     auraOffsetY = 1, -- AURA_OFFSET_Y,
     noDebuffFilter = true, -- noBuffDebuffFilterOnTarget
-    dynamicBuffSize = true
+    dynamicBuffSize = true -- showDynamicBuffSize
 }
 
 ---@class frame
 local frame = CreateFrame("Frame");
 lib.frame = frame;
+lib.Defaults = defaults
 
 function frame:SetDefaults()
     for k, v in pairs(defaults) do AuraDurationsDB[k] = v; end
@@ -39,6 +54,10 @@ function frame:SetState(state)
 end
 
 function frame:Update()
+    print('update')
+    SetCVarFunc('noBuffDebuffFilterOnTarget', AuraDurationsDB.noDebuffFilter)
+    SetCVarFunc('showDynamicBuffSize', AuraDurationsDB.dynamicBuffSize)
+
     TargetFrame_UpdateAuras(TargetFrame)
 end
 
@@ -50,11 +69,11 @@ frame:RegisterEvent("PLAYER_LOGIN")
 function frame:PLAYER_LOGIN(event, ...)
     -- print(event, ...)
 
-    if type(AuraDurationsDB) ~= 'table' or true then
+    if type(AuraDurationsDB) ~= 'table' then
         print('AuraDurations: new DB!')
         AuraDurationsDB = {}
-        self.AuraDurationsDB = AuraDurationsDB;
         lib.AuraDurationsDB = AuraDurationsDB;
+        self.AuraDurationsDB = AuraDurationsDB;
         frame:SetDefaults()
     end
 

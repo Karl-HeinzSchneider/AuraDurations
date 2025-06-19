@@ -10,3 +10,4 @@
 ## SavedVariables: AuraDurationsDB
 
 AuraDurations.xml
+options.lua
