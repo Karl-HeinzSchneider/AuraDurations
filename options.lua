@@ -7,18 +7,18 @@ local lib = LibStub:GetLibrary('AuraDurations-1.0')
 if not lib or lib.optionsSet then return; end
 lib.optionsSet = true;
 
-print('hook options!')
+-- print('hook options!')
 local frame = lib.frame;
 
 local SettingsDefaultStringFormat = "\n\n(Default: |cff8080ff%s|r)"
 
 local function SetupOptions()
-    print('options!')
+    -- print('options!')
 
     local AuraDurationsDB = AuraDurationsDB;
 
     local function OnSettingChanged(setting, value)
-        print("Setting changed:", setting:GetVariable(), value)
+        -- print("Setting changed:", setting:GetVariable(), value)
         -- DevTools_Dump({AuraDurationsDB})
         frame:Update()
     end
@@ -49,8 +49,8 @@ local function SetupOptions()
         local name = "Aura Size"
         local variable = "Aura size"
         local defaultValue = lib.Defaults.auraSizeLarge
-        local minValue = 1
-        local maxValue = 32
+        local minValue = 8
+        local maxValue = 64
         local step = 1
 
         local function GetValue()
@@ -95,8 +95,8 @@ local function SetupOptions()
         local name = "Aura Size Small"
         local variable = "Aura size Small"
         local defaultValue = lib.Defaults.auraSizeSmall
-        local minValue = 1
-        local maxValue = 32
+        local minValue = 8
+        local maxValue = 64
         local step = 1
 
         local function GetValue()
