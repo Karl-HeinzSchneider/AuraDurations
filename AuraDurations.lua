@@ -14,9 +14,33 @@ local MAX_TARGET_DEBUFFS = MAX_TARGET_DEBUFFS or 16;
 local UnitAura = UnitAura
 local LibClassicDurations;
 
+local defaults = {
+    auraSizeSmall = 17, -- SMALL_AURA_SIZE,
+    auraSizeLarge = 21, -- LARGE_AURA_SIZE,
+    auraOffsetY = 1, -- AURA_OFFSET_Y,
+    noDebuffFilter = true, -- noBuffDebuffFilterOnTarget
+    dynamicBuffSize = true
+}
+
 ---@class frame
 local frame = CreateFrame("Frame");
 lib.frame = frame;
+
+function frame:SetDefaults()
+    for k, v in pairs(defaults) do AuraDurationsDB[k] = v; end
+
+    self:Update()
+end
+
+function frame:SetState(state)
+    for k, v in pairs(state) do AuraDurationsDB[k] = v; end
+
+    self:Update()
+end
+
+function frame:Update()
+    TargetFrame_UpdateAuras(TargetFrame)
+end
 
 frame:SetScript("OnEvent", function(self, event, ...)
     return self[event](self, event, ...);
@@ -25,6 +49,14 @@ end)
 frame:RegisterEvent("PLAYER_LOGIN")
 function frame:PLAYER_LOGIN(event, ...)
     -- print(event, ...)
+
+    if type(AuraDurationsDB) ~= 'table' or true then
+        print('AuraDurations: new DB!')
+        AuraDurationsDB = {}
+        self.AuraDurationsDB = AuraDurationsDB;
+        lib.AuraDurationsDB = AuraDurationsDB;
+        frame:SetDefaults()
+    end
 
     LibClassicDurations = LibStub("LibClassicDurations", true)
     if LibClassicDurations then
