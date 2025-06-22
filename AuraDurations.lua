@@ -208,7 +208,7 @@ frame.TargetBuffHook = function(self)
         if (debuffName) then
             if (TargetFrame_ShouldShowDebuffs(unit, caster, nameplateShowAll, casterIsPlayer)) then
                 frameName = selfName .. "Debuff" .. frameNum;
-                frame = _G[frameName];
+                -- frame = _G[frameName];
                 if (icon) then
                     numDebuffs = numDebuffs + 1;
                     largeDebuffList[numDebuffs] = ShouldAuraBeLarge(caster);
