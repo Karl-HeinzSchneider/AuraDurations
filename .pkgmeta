@@ -1,0 +1,6 @@
+package-as: AuraDurations
+
+ignore:
+
+- Screenshots
+- "\*.png"
