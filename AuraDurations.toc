@@ -9,5 +9,4 @@
 ## X-Date: @project-date-integer@
 ## SavedVariables: AuraDurationsDB
 
-AuraDurations.xml
-options.lua
+AuraDurations_standalone.xml

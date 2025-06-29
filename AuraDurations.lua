@@ -1,5 +1,8 @@
 local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC;
-if not isClassic then return; end
+local addonName, addonTable = ...
+local standalone = (addonName == 'AuraDurations');
+
+if standalone and not isClassic then return; end
 
 local lib = LibStub:NewLibrary("AuraDurations-1.0", 1);
 
@@ -44,6 +47,7 @@ local defaults = {
 local frame = CreateFrame("Frame");
 lib.frame = frame;
 lib.Defaults = defaults
+lib.IsStandalone = standalone
 
 function frame:SetDefaults()
     for k, v in pairs(defaults) do AuraDurationsDB[k] = v; end
@@ -54,6 +58,7 @@ function frame:AddMissingKeys()
 end
 
 function frame:SetState(state)
+    if not standalone then frame:Embed() end
     for k, v in pairs(state) do AuraDurationsDB[k] = v; end
 
     self:Update()
@@ -71,17 +76,20 @@ frame:SetScript("OnEvent", function(self, event, ...)
     return self[event](self, event, ...);
 end)
 
-frame:RegisterEvent("PLAYER_LOGIN")
+-- standalone uses PLAYER_LOGIN
+-- embeded adds the functionality when you call SetState() 
+if standalone then frame:RegisterEvent("PLAYER_LOGIN") end
+
 function frame:PLAYER_LOGIN(event, ...)
     -- print(event, ...)
 
     if type(AuraDurationsDB) ~= 'table' then
         -- print('AuraDurations: new DB!')
         AuraDurationsDB = {}
-        lib.AuraDurationsDB = AuraDurationsDB;
-        self.AuraDurationsDB = AuraDurationsDB;
         frame:SetDefaults()
     end
+    lib.AuraDurationsDB = AuraDurationsDB;
+    self.AuraDurationsDB = AuraDurationsDB;
     self:AddMissingKeys()
     self:Update()
 
@@ -89,11 +97,20 @@ function frame:PLAYER_LOGIN(event, ...)
     if LibClassicDurations then
         LibClassicDurations:Register("AuraDurations")
         UnitAura = LibClassicDurations.UnitAuraWrapper
-
-        hooksecurefunc("TargetFrame_UpdateAuras", frame.TargetBuffHook)
-        hooksecurefunc("CompactUnitFrame_UtilSetBuff", frame.CompactUnitFrameBuffHook)
-        hooksecurefunc("CompactUnitFrame_UtilSetDebuff", frame.CompactUnitFrameDeBuffHook)
     end
+
+    hooksecurefunc("TargetFrame_UpdateAuras", frame.TargetBuffHook)
+    hooksecurefunc("CompactUnitFrame_UtilSetBuff", frame.CompactUnitFrameBuffHook)
+    hooksecurefunc("CompactUnitFrame_UtilSetDebuff", frame.CompactUnitFrameDeBuffHook)
+end
+
+function frame:Embed()
+    if frame.IsEmbeded then return false; end
+
+    frame:PLAYER_LOGIN('EMBED')
+
+    frame.IsEmbeded = true;
+    return true;
 end
 
 local largeBuffList = {};
@@ -186,10 +203,12 @@ frame.TargetBuffHook = function(self)
             -- using Lib
             -- Handle cooldowns
             frameCooldown = _G[frameName .. "Cooldown"];
-            local durationLib, expirationTimeLib = LibClassicDurations:GetAuraDurationByUnit(unit, spellId, caster);
-            if duration == 0 and durationLib then
-                duration = durationLib;
-                expirationTime = expirationTimeLib;
+            if LibClassicDurations then
+                local durationLib, expirationTimeLib = LibClassicDurations:GetAuraDurationByUnit(unit, spellId, caster);
+                if duration == 0 and durationLib then
+                    duration = durationLib;
+                    expirationTime = expirationTimeLib;
+                end
             end
             CooldownFrame_Set(frameCooldown, expirationTime - duration, duration, duration > 0, true);
         else
@@ -221,11 +240,13 @@ frame.TargetBuffHook = function(self)
                     -- using Lib
                     -- Handle cooldowns
                     frameCooldown = _G[frameName .. "Cooldown"];
-                    local durationLib, expirationTimeLib = LibClassicDurations:GetAuraDurationByUnit(unit, spellId,
-                                                                                                     caster);
-                    if duration == 0 and durationLib then
-                        duration = durationLib;
-                        expirationTime = expirationTimeLib;
+                    if LibClassicDurations then
+                        local durationLib, expirationTimeLib =
+                            LibClassicDurations:GetAuraDurationByUnit(unit, spellId, caster);
+                        if duration == 0 and durationLib then
+                            duration = durationLib;
+                            expirationTime = expirationTimeLib;
+                        end
                     end
                     CooldownFrame_Set(frameCooldown, expirationTime - duration, duration, duration > 0, true);
 
@@ -269,10 +290,12 @@ frame.CompactUnitFrameBuffHook = function(buffFrame, unit, index, filter)
     local name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, canApplyAura =
         UnitBuff(unit, index, filter);
 
-    local durationLib, expirationTimeLib = LibClassicDurations:GetAuraDurationByUnit(unit, spellId, unitCaster);
-    if duration == 0 and durationLib then
-        duration = durationLib;
-        expirationTime = expirationTimeLib;
+    if LibClassicDurations then
+        local durationLib, expirationTimeLib = LibClassicDurations:GetAuraDurationByUnit(unit, spellId, unitCaster);
+        if duration == 0 and durationLib then
+            duration = durationLib;
+            expirationTime = expirationTimeLib;
+        end
     end
 
     -- CompactUnitFrame_UpdateCooldownFrame(buffFrame, expirationTime - duration, duration, true); -- blizz default
@@ -302,10 +325,12 @@ frame.CompactUnitFrameDeBuffHook = function(debuffFrame, unit, index, filter, is
                                                                                                                filter);
     end
 
-    local durationLib, expirationTimeLib = LibClassicDurations:GetAuraDurationByUnit(unit, spellId, unitCaster);
-    if duration == 0 and durationLib then
-        duration = durationLib;
-        expirationTime = expirationTimeLib;
+    if LibClassicDurations then
+        local durationLib, expirationTimeLib = LibClassicDurations:GetAuraDurationByUnit(unit, spellId, unitCaster);
+        if duration == 0 and durationLib then
+            duration = durationLib;
+            expirationTime = expirationTimeLib;
+        end
     end
 
     -- CompactUnitFrame_UpdateCooldownFrame(debuffFrame, expirationTime, duration, false);
