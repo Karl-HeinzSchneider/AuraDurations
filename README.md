@@ -29,3 +29,22 @@ Uses the default API and is based on blizzard code from TBC onwards; also uses 
 Source code released under MIT licence.
 
 Can be embeded (as the initial purpose was adding this functionality to [DragonflightUI classic](https://www.curseforge.com/wow/addons/dragonflight-ui-classic)).
+
+To embed:
+  - Include `AuraDurations_embed.xml`
+  - Load the lib with `local auraDurations = LibStub:GetLibrary('AuraDurations-1.0')`
+  - Update the state with `auraDurations.frame:SetState(...)` which automatically adds the functionality on the first call
+  - Currently used options:
+    ```  
+    local defaults = {
+      auraSizeSmall = 17, -- SMALL_AURA_SIZE,
+      auraSizeLarge = 21, -- LARGE_AURA_SIZE,
+      auraOffsetY = 1, -- AURA_OFFSET_Y,
+      noDebuffFilter = true, -- noBuffDebuffFilterOnTarget
+      dynamicBuffSize = true, -- showDynamicBuffSize
+      auraRowWidth = 122, -- AURA_ROW_WIDTH
+      totAuraRowWidth = 101, -- TOT_AURA_ROW_WIDTH
+      numTotAuraRows = 2 -- NUM_TOT_AURA_ROWS
+    }    
+    ```
+    Defaults accessible through `auraDurations.Defaults`; set defaults with `auraDurations.frame:SetDefaults()`.
