@@ -1,5 +1,5 @@
-## Interface:  11507
-## Interface-Classic: 11507
+## Interface:  11508
+## Interface-Classic: 11508
 ## Title: AuraDurations |cff8080ff@project-version@|r
 ## Notes: Simple addon to bring back buff/debuff swipe timers for the default TargetFrame and CompactRaidFrame on Era.|n|cffbbbbbbBy Karl-Heinz Schneider|r|n|n|TInterface/Addons/AuraDurations/coffee:12:12|t |cff82c5ffbuymeacoffee.com/karlheinzschneider|r
 ## Author: Karl-Heinz Schneider
