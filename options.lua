@@ -119,7 +119,6 @@ local function SetupOptions()
     end
 
     Settings.RegisterAddOnCategory(category)
-
 end
 hooksecurefunc(frame, 'PLAYER_LOGIN', SetupOptions)
 
