@@ -2,7 +2,7 @@
 local addonName, addonTable = ...
 if addonName ~= 'AuraDurations' then return; end
 
-local lib = LibStub:GetLibrary('AuraDurations-1.0')
+local lib = LibStub:GetLibrary('AuraDurations-1.0', true)
 
 if not lib or lib.optionsSet then return; end
 lib.optionsSet = true;
