@@ -223,6 +223,7 @@ function TargetFrame_UpdateBuffAnchor(self, buffName, index, numDebuffs, anchorI
     end
 
     local buff = _G[buffName .. index];
+    if not buff then return end
     if (index == 1) then
         if (UnitIsFriend("player", self.unit) or numDebuffs == 0) then
             -- unit is friendly or there are no debuffs...buffs start on top
@@ -274,6 +275,7 @@ function TargetFrame_UpdateDebuffAnchor(self, debuffName, index, numBuffs, ancho
         auraOffsetY = AURA_OFFSET_Y;
     end
 
+    if not buff then return end
     if (index == 1) then
         if (isFriend and numBuffs > 0) then
             -- unit is friendly and there are buffs...debuffs start on bottom
@@ -334,7 +336,9 @@ frame.TargetBuffHook = function(self)
             --         expirationTime = expirationTimeLib;
             --     end
             -- end
-            CooldownFrame_Set(frameCooldown, expirationTime - duration, duration, duration > 0, true);
+            if frameCooldown then
+                CooldownFrame_Set(frameCooldown, expirationTime - duration, duration, duration > 0, true);
+            end
         else
             break
         end
@@ -372,8 +376,9 @@ frame.TargetBuffHook = function(self)
                     --         expirationTime = expirationTimeLib;
                     --     end
                     -- end
-                    CooldownFrame_Set(frameCooldown, expirationTime - duration, duration, duration > 0, true);
-
+                    if frameCooldown then
+                        CooldownFrame_Set(frameCooldown, expirationTime - duration, duration, duration > 0, true);
+                    end
                     frameNum = frameNum + 1;
                 end
             end
