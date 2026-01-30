@@ -3,7 +3,7 @@ local isTBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC;
 local addonName, addonTable = ...
 local standalone = (addonName == 'AuraDurations');
 
-if standalone and not (isClassic or isTBC) then return; end
+-- if standalone and not (isClassic or isTBC) then return; end
 
 local lib = LibStub:NewLibrary("AuraDurations-1.0", 2);
 
