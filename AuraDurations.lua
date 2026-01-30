@@ -73,6 +73,8 @@ function frame:Update()
     SetCVarFunc('showDynamicBuffSize', AuraDurationsDB.dynamicBuffSize)
 
     if TargetFrame_UpdateAuras then TargetFrame_UpdateAuras(TargetFrame) end
+    if TargetFrame.UpdateAuras then TargetFrame:UpdateAuras() end
+    if FocusFrame.UpdateAuras then FocusFrame:UpdateAuras() end
 end
 
 frame:SetScript("OnEvent", function(self, event, ...)
@@ -107,16 +109,21 @@ function frame:PLAYER_LOGIN(event, ...)
     if TargetFrame_UpdateAuras then
         -- Era etc
         hooksecurefunc("TargetFrame_UpdateAuras", frame.TargetBuffHook)
-    elseif TargetFrame.UpdateAuras then
+    end
+    if TargetFrame.UpdateAuras then
         -- TBC
         hooksecurefunc(TargetFrame, "UpdateAuras", function()
-            print('UpdateAuras')
             frame.TargetBuffHook(TargetFrame)
         end)
-
     end
-    -- hooksecurefunc("CompactUnitFrame_UtilSetBuff", frame.CompactUnitFrameBuffHook)
-    -- hooksecurefunc("CompactUnitFrame_UtilSetDebuff", frame.CompactUnitFrameDeBuffHook)
+    if FocusFrame.UpdateAuras then
+        -- TBC
+        hooksecurefunc(FocusFrame, "UpdateAuras", function()
+            frame.TargetBuffHook(FocusFrame)
+        end)
+    end
+    hooksecurefunc("CompactUnitFrame_UtilSetBuff", frame.CompactUnitFrameBuffHook)
+    hooksecurefunc("CompactUnitFrame_UtilSetDebuff", frame.CompactUnitFrameDeBuffHook)
 end
 
 function frame:Embed()
