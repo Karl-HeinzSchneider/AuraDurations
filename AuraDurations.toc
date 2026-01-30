@@ -1,4 +1,8 @@
-## Interface:  11508
+## Interface: 50503, 40402, 30405, 30404, 20505, 11508
+## Interface-Mists: 50503
+## Interface-Cata: 40402
+## Interface-Wrath: 30405, 30404
+## Interface-TBC: 20505
 ## Interface-Classic: 11508
 ## Title: AuraDurations |cff8080ff@project-version@|r
 ## Notes: Simple addon to bring back buff/debuff swipe timers for the default TargetFrame and CompactRaidFrame on Era.|n|cffbbbbbbBy Karl-Heinz Schneider|r|n|n|TInterface/Addons/AuraDurations/coffee:12:12|t |cff82c5ffbuymeacoffee.com/karlheinzschneider|r
